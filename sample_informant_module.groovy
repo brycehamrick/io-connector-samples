@@ -8,8 +8,9 @@ import groovyx.net.http.ContentType
 import groovyx.net.http.HTTPBuilder
 import groovyx.net.http.Method
 
-@Grapes([
+@Grapes([    
 @Grab(group = 'org.codehaus.groovy.modules.http-builder', module = 'http-builder', version = '0.5.2'),
+@GrabResolver(name='janrain', root='https://repository-janrain.forge.cloudbees.com/release'),
 @Grab(group = 'com.janrain.io', module = 'io-core', version = '0.0.3')
 ])
 class SampleInformantModule extends BaseModule<Informant> implements Informant {

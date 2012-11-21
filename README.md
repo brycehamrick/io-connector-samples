@@ -6,7 +6,9 @@ An IO Connector is code that extends Janrain Capture functionality that would ex
 
 For a given Capture instance, there can be many connectors installed, hence the concept of modules.
 
-The sample provided implements an "Informant" module which is a stereotype for modules that integrates with Email Service providers. Typical oprations would be to subscribe or unsubscribe a user, or to sync data between Capture and the ESP.
+The samples provided implements an "Informant" module which is a stereotype for modules that integrates with Email Service providers. Typical oprations would be to subscribe or unsubscribe a user, or to sync data between Capture and the ESP.
+
+There is also one for Replicant (Data replication) and Messenger (Notifications).
 
 There are many more stereotypes, we will add samples as we add new ones.
 

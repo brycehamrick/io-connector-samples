@@ -1,14 +1,18 @@
 package com.janrain.io
 
+import com.google.common.base.Preconditions
 import com.janrain.io.apps.model.PseudoIOAppContext
 import com.janrain.io.apps.module.BaseModule
 import com.janrain.io.apps.stereotype.Messenger
 import groovyx.net.http.ContentType
 import groovyx.net.http.HTTPBuilder
 import groovyx.net.http.Method
+import org.apache.commons.validator.EmailValidator
 
 @Grapes([
 @Grab(group = 'org.codehaus.groovy.modules.http-builder', module = 'http-builder', version = '0.5.2'),
+@Grab(group = 'com.google.guava', module = 'guava', version = '13.0.1'),
+@Grab(group = 'commons-validator', module = 'commons-validator', version = '1.4.0'),
 @GrabResolver(name = 'janrain', root = 'https://repository-janrain.forge.cloudbees.com/release'),
 @Grab(group = 'com.janrain.io', module = 'io-core', version = '0.0.3')
 ])
@@ -16,6 +20,14 @@ class SampleMessengerModule extends BaseModule<Messenger> implements Messenger {
 
     @Override
     void sendMessage(Map<String, Object> params) {
+
+        Preconditions.checkNotNull(params.to, "sendMessage %s argument missing", "to")
+        Preconditions.checkNotNull(params.from, "sendMessage %s argument missing", "from")
+        Preconditions.checkNotNull(params.subject, "sendMessage %s argument missing", "subject")
+        Preconditions.checkNotNull(params.body, "sendMessage %s argument missing", "body")
+        Preconditions.checkArgument(EmailValidator.instance.isValid(params.to), "invalid email address: %s", params.to)
+        Preconditions.checkArgument(EmailValidator.instance.isValid(params.from), "invalid email address: %s", params.from)
+
         println "sending email to $params.to"
     }
 

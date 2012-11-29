@@ -1,7 +1,6 @@
 package com.janrain.io
 
 import com.google.common.base.Preconditions
-import com.janrain.io.apps.model.PseudoIOAppContext
 import com.janrain.io.apps.module.BaseModule
 import com.janrain.io.apps.stereotype.Messenger
 import groovyx.net.http.ContentType
@@ -9,11 +8,11 @@ import groovyx.net.http.HTTPBuilder
 import groovyx.net.http.Method
 import org.apache.commons.validator.EmailValidator
 
+@GrabResolver(name = 'janrain', root = 'https://repository-janrain.forge.cloudbees.com/release')
 @Grapes([
 @Grab(group = 'org.codehaus.groovy.modules.http-builder', module = 'http-builder', version = '0.5.2'),
 @Grab(group = 'com.google.guava', module = 'guava', version = '13.0.1'),
 @Grab(group = 'commons-validator', module = 'commons-validator', version = '1.4.0'),
-@GrabResolver(name = 'janrain', root = 'https://repository-janrain.forge.cloudbees.com/release'),
 @Grab(group = 'com.janrain.io', module = 'io-core', version = '0.0.3')
 ])
 class SampleMessengerModule extends BaseModule<Messenger> implements Messenger {
@@ -49,12 +48,6 @@ class SampleMessengerModule extends BaseModule<Messenger> implements Messenger {
     public static void main(String[] args) {
         // instantiate the module
         Messenger mod = new SampleMessengerModule()
-
-        // this is an pseudo context meant to simulate
-        mod.context = new PseudoIOAppContext()
-
-        // setting debug as true will print to the console all println statements
-        mod.props = ["debug": "true"]
 
         // boot your module with a set of properties
         // that you will use throughout your module by calling props['hello']

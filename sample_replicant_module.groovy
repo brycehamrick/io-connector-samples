@@ -1,17 +1,14 @@
 package com.janrain.io
 
-import com.janrain.io.apps.model.PseudoIOAppContext
 import com.janrain.io.apps.module.BaseModule
-import com.janrain.io.apps.stereotype.Informant
-import groovy.json.JsonSlurper
+import com.janrain.io.apps.stereotype.Replicant
 import groovyx.net.http.ContentType
 import groovyx.net.http.HTTPBuilder
 import groovyx.net.http.Method
-import com.janrain.io.apps.stereotype.Replicant
 
-@Grapes([    
+@GrabResolver(name = 'janrain', root = 'https://repository-janrain.forge.cloudbees.com/release')
+@Grapes([
 @Grab(group = 'org.codehaus.groovy.modules.http-builder', module = 'http-builder', version = '0.5.2'),
-@GrabResolver(name='janrain', root='https://repository-janrain.forge.cloudbees.com/release'),
 @Grab(group = 'com.janrain.io', module = 'io-core', version = '0.0.3')
 ])
 class SampleReplicantModule extends BaseModule<Replicant> implements Replicant {
@@ -31,20 +28,9 @@ class SampleReplicantModule extends BaseModule<Replicant> implements Replicant {
         println "cleaning up"
     }
 
-    @Override
-    boolean self_test(Map params) {
-        return true
-    }
-
     public static void main(String[] args) {
         // instantiate the module
         Replicant mod = new SampleReplicantModule()
-
-        // this is an pseudo context meant to simulate
-        mod.context = new PseudoIOAppContext()
-        
-        // setting debug as true will print to the console all println statements
-        mod.props = ["debug": "true"]
 
         // boot your module with a set of properties
         // that you will use throughout your module by calling props['hello']
@@ -53,16 +39,16 @@ class SampleReplicantModule extends BaseModule<Replicant> implements Replicant {
         // let's call capture and use a real world entity
         // docs: http://developers.janrain.com/documentation/api-methods/capture/entity/find/
         def http = new HTTPBuilder('https://io.dev.janraincapture.com')
-        
+
         http.request(Method.POST, ContentType.JSON) {
             uri.path = "/entity.find"
-            uri.query = [   
-                            filter: "uuid is not null", 
-                            max_results: 1, 
-                            type_name: "user",
-                            client_id: "vsyzav9f9wq8u7xjvwkwhtz7kgg7dy6y",
-                            client_secret: "sppfwb2cbwpfauch3xm58re7nmeuex8h"
-                        ]
+            uri.query = [
+                    filter: "uuid is not null",
+                    max_results: 1,
+                    type_name: "user",
+                    client_id: "vsyzav9f9wq8u7xjvwkwhtz7kgg7dy6y",
+                    client_secret: "sppfwb2cbwpfauch3xm58re7nmeuex8h"
+            ]
             response.success = { resp, json ->
                 // let's collect the first result and use it
                 def entity = json.results[0]
